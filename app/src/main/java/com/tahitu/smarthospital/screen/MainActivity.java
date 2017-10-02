@@ -6,29 +6,40 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tahitu.smarthospital.R;
 import com.tahitu.smarthospital.custom_view.ResideMenu.ResideMenu;
 import com.tahitu.smarthospital.custom_view.ResideMenu.ResideMenuItem;
+import com.tahitu.smarthospital.screen.fragment.FeedbackFragment;
+import com.tahitu.smarthospital.screen.fragment.HomeFragment;
+import com.tahitu.smarthospital.screen.fragment.ProfileFragment;
 
-public class Home extends FragmentActivity implements View.OnClickListener {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class MainActivity extends FragmentActivity implements View.OnClickListener {
+
+    @BindView(R.id.topbar_title)
+    TextView topbar_title;
 
     private ResideMenu resideMenu;
     private ResideMenuItem itemHome;
     private ResideMenuItem itemProfile;
     private ResideMenuItem itemCalendar;
     private ResideMenuItem itemSettings;
-    private Home mContext;
+    private MainActivity mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        ButterKnife.bind(this);
         mContext = this;
         setUpMenu();
-//        if( savedInstanceState == null )
-//            changeFragment(new HomeFragment());
+        if( savedInstanceState == null )
+            changeFragment(new HomeFragment());
     }
 
     private void setUpMenu() {
@@ -44,7 +55,7 @@ public class Home extends FragmentActivity implements View.OnClickListener {
         // create menu items;
         itemHome     = new ResideMenuItem(this, R.drawable.icon_home,     "Home");
         itemProfile  = new ResideMenuItem(this, R.drawable.icon_profile,  "Profile");
-        itemCalendar = new ResideMenuItem(this, R.drawable.icon_calendar, "Calendar");
+        itemCalendar = new ResideMenuItem(this, R.drawable.icon_calendar, "Feedback");
         itemSettings = new ResideMenuItem(this, R.drawable.icon_settings, "Settings");
 
         itemHome.setOnClickListener(this);
@@ -82,12 +93,14 @@ public class Home extends FragmentActivity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if (view == itemHome){
-            Toast.makeText(mContext, "clicked item Home", Toast.LENGTH_SHORT).show();
-//            changeFragment(new HomeFragment());
+            changeFragment(new HomeFragment());
+            topbar_title.setText("Home");
         }else if (view == itemProfile){
-//            changeFragment(new ProfileFragment());
+            changeFragment(new ProfileFragment());
+            topbar_title.setText("Profile");
         }else if (view == itemCalendar){
-//            changeFragment(new CalendarFragment());
+            changeFragment(new FeedbackFragment());
+            topbar_title.setText("Feedback");
         }else if (view == itemSettings){
 //            changeFragment(new SettingsFragment());
         }
@@ -116,7 +129,6 @@ public class Home extends FragmentActivity implements View.OnClickListener {
                 .commit();
     }
 
-    // What good method is to access resideMenu？
     public ResideMenu getResideMenu(){
         return resideMenu;
     }
